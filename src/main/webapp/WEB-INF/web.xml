@@ -50,6 +50,15 @@
         <url-pattern>/AddEventServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ClubServlet</servlet-name>
+        <servlet-class>api.servlets.ServletClubPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClubServlet</servlet-name>
+        <url-pattern>/page</url-pattern>
+    </servlet-mapping>
+
 
 
     <resource-ref>

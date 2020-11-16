@@ -72,54 +72,16 @@
     if(session.getAttribute("user")==null) {
         response.sendRedirect("../auth.jsp");
     }
-    FetchService fetchService = new FetchService();
-    ArrayList<Student> students = new ArrayList<>();
-    int id_student = (int) session.getAttribute("student_id");
-    ClubService clubService = new ClubService();
-    String id = request.getParameter("id");
-    Club club = clubService.getClub(id);
+    String userId = (String) session.getAttribute("user_id");
+    Club club = (Club) request.getAttribute("club");
 %>
 
 <script>
-    $(document).ready(function() {
-        $('#btn_join').click(function(){
-            id = $("#id_student").val();
-            club = $("#id_club").val();
-            alert(id + " " + club);
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4) {
-                    var response = JSON.parse(this.responseText).message;
-                    alert(response)
-                    location.reload();
-                }
-            };
-            xhttp.open("POST", "http://localhost:8090/FinalProject3_war/api/clubs/enter", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send("club_id=" + club + "&student_id=" + id);
-    });
 
-    $('#btn_leave').click(function(){
-        id = $("#id_student").val();
-        club = $("#id_club").val();
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                var response = JSON.parse(this.responseText).message;
-                alert(response)
-                location.reload();
-            }
-        };
-        xhttp.open("POST", "http://localhost:8090/FinalProject3_war/clubs/leave", true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send("club_id=" + club + "&student_id=" + id);
-    });
-    });
 </script>
 
 <div class="container">
     <div id="main">
-
 
         <div class="row" id="real-estates-detail">
             <div class="col-lg-4 col-md-4 col-xs-12">
@@ -132,10 +94,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="text-center" id="author">
-                            <img src="<%=club.getImage()%>>">
-                            <h3><%=club.getName()%></h3>
+                            <img id="img" src="">
+                            <h3 id="title"></h3>
                             <small class="label label-warning">University club</small>
-                            <p><%=club.getDescription()%>></p>
+                            <p id="bodyText"></p>
                             <p class="sosmed-author">
                                 <a href="#"><i class="fa fa-facebook" title="Facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter" title="Twitter"></i></a>
@@ -146,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <input style="display: none;" type="text" class="form-control" id="id_student" value="<%=id_student%>">
+            <input style="display: none;" type="text" class="form-control" id="id_student" value="">
             <input style="display: none;" type="text" class="form-control" id="id_club" value="<%=club.getId()%>">
             <div class="col-lg-8 col-md-8 col-xs-12">
                 <div class="panel">
@@ -162,9 +124,8 @@
                                 <h4>About club</h4>
                                 <table class="table table-th-block">
                                     <tbody>
-                                    <tr><td class="active">Registration date:</td><td><%=club.getCreated_at()%>></td></tr>
+                                    <tr><td class="active">Registration date:</td><td id="created_date"></td></tr>
                                     <tr><td class="active">University:</td><td>Astana IT University</td></tr>
-                                    <tr><td class="active">Members:</td><td><%=students.size()%></td></tr>
                                     </tbody>
                                 </table>
 

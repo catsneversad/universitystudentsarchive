@@ -28,6 +28,7 @@ public class AuthServlet extends HttpServlet {
             try {
                 Student student = authService.authenticate(email, password);
                 session.setAttribute("user", student);
+                session.setAttribute("user_id", student.getId());
                 System.out.println("Successfully logged");
             } catch (Exception e) {
                 request.setAttribute("student_auth_error", e.getMessage());
@@ -37,7 +38,9 @@ public class AuthServlet extends HttpServlet {
         else if (role.equals("admin")){
             try {
                 Admin admin = authService.admin_authenticate(email, password);
+                session.setAttribute("admin", admin);
                 session.setAttribute("user", admin);
+                session.setAttribute("user_id", admin.getId());
                 System.out.println("Successfully!");
                 //TODO Add some cookies
             } catch (Exception e) {

@@ -34,12 +34,12 @@
 
 <body>
 <% if(session.getAttribute("admin")!=null){%>
-<header>
-    <nav class="navigation">
-        <ul class="categories">
-            <li class="category-item"><a href="jsp/clubs.jsp">Clubs</a></li>
-            <li class="category-item"><a href="jsp/events.jsp">Events</a></li>
-            <li class="category-item"><a href="jsp/news.jsp">News</a></li>
+<header style="position: fixed; width: 100%; z-index: 1;">
+    <nav class="navigation" style="margin-left: 10%;">
+        <ul class="categories" style="font-size: 200%;">
+            <li class="category-item"><a href="clubs.jsp">Clubs</a></li>
+            <li class="category-item"><a href="events.jsp">Events</a></li>
+            <li class="category-item"><a href="news.jsp">News</a></li>
         </ul>
     </nav>
 </header>
@@ -55,46 +55,63 @@
         </ul>
     </aside>
     <main class="content">
-        <div class = "feed-grid" style="margin-left: 10%;">
+        <div class = "feed-grid" style="margin-left: 10%; margin-top:2%;" >
 
             <div id="newsInfo">
             <% for(News paper : news){%>
-            <div class="card">
-                <a href="NewsPage.jsp?id=<%=paper.getId()%>">
-                <img class="card-img-top" src="<%=paper.getImage()%>" alt="Card image cap"/>
-                <div class="card-body">
-                    <h4 class="card-title"><%=paper.getName()%></h4>
-                </div>
-                </a>
-            </div>
+                <form action="<%=request.getContextPath()%>/page" method="get">
+                    <button style="border: none;">
+                        <div class="card">
+                            <a href="NewsPage.jsp?id=<%=paper.getId()%>">
+                                <img class="card-img-top" src="<%=paper.getImage()%>" alt="Card image cap"/>
+                                <div class="card-body">
+                                    <h4 class="card-title"><%=paper.getName()%></h4>
+                                    <p class="card-text"><%=paper.getDescription()%></p>
+                                    <input type="number" style="display: none;" value="<%=paper.getId()%>">
+                                    <input type="text" style="display: none;"name="type" value="news">
+                                </div>
+                            </a>
+                        </div>
+                    </button>
+                </form>
             <%}%>
             </div>
 
-            <div id="clubsInfo" class="close">
+            <div id="clubsInfo" >
             <% for(Club club : clubs){%>
-            <div class="card">
-                <a href="jsp/ClubPage.jsp?id=<%=club.getId()%>">
-                <img class="card-img-top" src="<%=club.getImage()%>" alt="Card image cap"/>
-                <div class="card-body">
-                    <h4 class="card-title"><%=club.getName()%></h4>
-                </div>
-                </a>
-            </div>
+                <form action="<%=request.getContextPath()%>/page" method="get">
+                    <button style="border: none;">
+                        <div class="card">
+                            <img class="card-img-top" src="<%=club.getImage()%>" alt="Card image cap"/>
+                            <div class="card-body">
+                                <h4 class="card-title"><%=club.getName()%></h4>
+                                <input type="number" style="display: none;" name="id" value="<%=club.getId()%>">
+                                <input type="text" style="display: none;" name="type" value="club">
+                            </div>
+                        </div>
+                    </button>
+                </form>
             <%}%>
             <div>
 
-            <div id="eventsInfo" class="close">
+            <div id="eventsInfo">
             <% for(Event event : events){%>
-            <div class="card" >
-                <a href="clubs.jsp?id=<%=event.getId()%>">
-                <img class="card-img-top" src="<%=event.getImage()%>" alt="Card image cap"/>
-                <div class="card-body">
-                    <h4 class="card-title"><%=event.getName()%></h4>
-                    <p class="card-text"><%=event.getDescription()%></p>
-                </div>
-                </a>
-            </div>
-            <%}%>
+                    <form action="<%=request.getContextPath()%>/page" method="get">
+                        <button style="border: none;">
+                            <div class="card">
+                                <a href="EventPage.jsp?id=<%=event.getId()%>">
+                                    <img class="card-img-top" src="<%=event.getImage()%>" alt="Card image cap"/>
+                                    <div class="card-body">
+                                        <h4 class="card-title"><%=event.getName()%></h4>
+                                        <p class="card-text"><%=event.getDescription()%></p>
+                                        <input type="number" style="display: none;" value="<%=event.getId()%>">
+                                        <input type="text" style="display: none;"name="type" value="news">
+                                    </div>
+                                </a>
+                            </div>
+                        </button>
+                    </form>
+                <%}%>
             <div>
 
         </div>

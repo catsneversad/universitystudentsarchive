@@ -4,7 +4,12 @@ import api.Response.CustomResponses;
 import api.Response.ResponseMessage;
 import api.interfaces.IClub;
 import api.models.*;
+import org.glassfish.jersey.client.ClientConfig;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -129,5 +134,19 @@ public class ClubService extends BasicService implements IClub {
             ));
         closeAll();
         return CustomResponses.read(list);
+    }
+
+    private static String baseUri = "http://localhost:8080/FinalProject3_war/api";
+
+    static WebTarget getWebTarget () {
+        ClientConfig config = new ClientConfig();
+        Client client = ClientBuilder.newClient(config);
+        return client.target(baseUri);
+    }
+
+    public Club getClub (String id) {
+        WebTarget target = getWebTarget();
+        Club club = target.path("clubs").path(id).request().accept(MediaType.APPLICATION_JSON).get(Club.class);
+        return club;
     }
 }
