@@ -31,7 +31,7 @@
        ArrayList<Event> events = fetchService.fetchEvents(0,0);
        ArrayList<News> news = fetchService.fetchNews(0);
 %>
-
+<%--AGAI SORE--%>
 <body>
 <% if(session.getAttribute("admin")!=null){%>
 <header style="position: fixed; width: 100%; z-index: 1;">
@@ -67,7 +67,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title"><%=paper.getName()%></h4>
                                     <p class="card-text"><%=paper.getDescription()%></p>
-                                    <input type="number" style="display: none;" value="<%=paper.getId()%>">
+                                    <input type="number" style="display: none;" name="id" value="<%=paper.getId()%>">
                                     <input type="text" style="display: none;"name="type" value="news">
                                 </div>
                             </a>
@@ -104,7 +104,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title"><%=event.getName()%></h4>
                                         <p class="card-text"><%=event.getDescription()%></p>
-                                        <input type="number" style="display: none;" value="<%=event.getId()%>">
+                                        <input type="number" style="display: none;" name="id" value="<%=event.getId()%>">
                                         <input type="text" style="display: none;"name="type" value="news">
                                     </div>
                                 </a>
