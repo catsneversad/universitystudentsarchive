@@ -1,29 +1,29 @@
 $(document).ready(function() {
     $('#news').click(function(){
             $('#news').addClass('sb active');
-            $('.newsInfo').css('display','none');
+            $('.newsInfo').removeClass('close');
             $('#clubs').removeClass('sb active');
-            $('.clubsInfo').css('display','none');
+            $('#clubsInfo').addClass('close');
             $('#events').removeClass('sb active');
-            $('.eventsInfo').css('display','none');
+            $('#eventsInfo').addClass('close');
         }
     );
     $('#clubs').click(function(){
             $('#clubs').addClass('sb active');
-            $('.clubsInfo').css('display','none');
+            $('#clubsInfo').removeClass('close');
             $('#news').removeClass('sb active');
-            $('.newsInfo').css('display','none');
+            $('#newsInfo').addClass('close');
             $('#events').removeClass('sb active');
-            $('.eventsInfo').css('display','none');
+            $('#eventsInfo').addClass('close');
         }
     );
     $('#events').click(function(){
             $('#events').addClass('sb active');
-            $('.eventsInfo').css('display','none');
+            $('#eventsInfo').removeClass('close');
             $('#clubs').removeClass('sb active');
-            $('.clubsInfo').css('display','none');
+            $('#clubsInfo').addClass('close');
             $('#news').removeClass('sb active');
-            $('.newsInfo').css('display','none');
+            $('#newsInfo').addClass('close');
         }
     );
 });

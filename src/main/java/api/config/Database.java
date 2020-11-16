@@ -14,15 +14,34 @@ public class Database {
     public static final String driver = "com.mysql.jdbc.Driver";
 
     public static Connection getConnection(){
+        Context initialContext = null;
+        Connection connection = null;
+        try
+        {
+            initialContext = new InitialContext();
+            Context envCtx = (Context)initialContext.lookup("java:comp/env");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/FinalProject");
+            connection = ds.getConnection();
+            System.out.println("Connected successfully!");
+        }
+        catch (NamingException | SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+
+   /* public static Connection getConnection(){
         Context initialContext;
         Connection connection = null;
         try
         {
-            Class.forName("org.postgresql.Driver");
-            String conStr = "jdbc:postgresql://localhost:5432/course_apjava";
+            Class.forName("org.mysql.Driver");
+            String conStr = "jdbc:mysql://localhost:3309/FinalProject";
             Properties props = new Properties();
-            props.setProperty("user","postgres");
-            props.setProperty("password","123");
+            props.setProperty("user","root");
+            props.setProperty("password","root");
             Connection con = DriverManager.getConnection(conStr, props);
             connection = con;
         }
@@ -31,5 +50,5 @@ public class Database {
             e.printStackTrace();
         }
         return connection;
-    }
+    }*/
 }

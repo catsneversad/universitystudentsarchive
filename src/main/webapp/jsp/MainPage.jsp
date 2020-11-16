@@ -73,7 +73,7 @@
             <div id="clubsInfo" class="close">
             <% for(Club club : clubs){%>
             <div class="card">
-                <a href="jsp/ClubPage.jsp?id=<%=club.getId()%>">
+                <a href="ClubPage.jsp?id=<%=club.getId()%>">
                 <img class="card-img-top" src="<%=club.getImage()%>" alt="Card image cap"/>
                 <div class="card-body">
                     <h4 class="card-title"><%=club.getName()%></h4>
