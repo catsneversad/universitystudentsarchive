@@ -8,25 +8,18 @@ import java.sql.*;
 import java.util.Properties;
 
 public class Database {
-    public static final String url = "jdbc:postgresql://localhost:5432/AdjavaFinal";
-    public static final String user = "postgres";
-    public static final String password = "lbvfi2281";
-    public static final String driver = "com.mysql.jdbc.Driver";
 
     public static Connection getConnection(){
-        Context initialContext;
+        Context initialContext = null;
         Connection connection = null;
         try
         {
-            Class.forName("org.postgresql.Driver");
-            String conStr = "jdbc:postgresql://localhost:5432/AdjavaFinal";
-            Properties props = new Properties();
-            props.setProperty("user","postgres");
-            props.setProperty("password","lbvfi2281");
-            Connection con = DriverManager.getConnection(conStr, props);
-            connection = con;
+            initialContext = new InitialContext();
+            Context envCtx = (Context)initialContext.lookup("java:comp/env");
+            DataSource ds = (DataSource)envCtx.lookup("jdbc/week");
+            connection = ds.getConnection();
         }
-        catch (SQLException | ClassNotFoundException e)
+        catch (NamingException | SQLException e)
         {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package api.models;
 
+import javax.ws.rs.core.Response;
 import java.util.Date;
 
 public class News {

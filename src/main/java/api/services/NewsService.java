@@ -3,7 +3,6 @@ package api.services;
 import api.Response.CustomResponses;
 import api.Response.ResponseMessage;
 import api.interfaces.INews;
-import api.models.Event;
 import api.models.Major;
 import api.models.News;
 
@@ -30,7 +29,7 @@ public class NewsService extends BasicService implements INews {
     }
 
     @Override
-    public Response read(int id) throws Exception {
+    public News read(int id) throws Exception {
         String query = "select *, m.name as major_name from news n inner join major m " +
                 "on n.major_id = m.id where n.id = " + id;
         statement = connection.createStatement();
@@ -39,14 +38,14 @@ public class NewsService extends BasicService implements INews {
             throw new Exception(ResponseMessage.NOT_FOUND);
         }
         resultSet.next();
-        return CustomResponses.read(new News(
+        return new News(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
                 resultSet.getString("description"),
                 resultSet.getString("image"),
                 new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
                 resultSet.getDate("created_at")
-        ));
+        );
     }
 
     @Override

@@ -1,10 +1,12 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Date" %>
+
 <%@ page import="api.models.Club" %>
 <%@ page import="api.models.Event" %>
 <%@ page import="api.models.News" %>
 <%@ page import="api.services.FetchService" %>
-<%@ page import="api.models.Major" %><%--
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Stack" %>
+<%--
   Created by IntelliJ IDEA.
   User: didef
   Date: 14.11.2020
@@ -28,10 +30,21 @@
        }
        FetchService fetchService = new FetchService();
        ArrayList<Club> clubs = fetchService.fetchClubs();
-       ArrayList<Event> events = fetchService.fetchEvents(0,0);
-       ArrayList<News> news = fetchService.fetchNews(0);
+       LinkedList<Event> events = fetchService.fetchEvents(0,0);
+       Stack<News> news = fetchService.fetchNews(0);
+
+       Cookie[] cookies = request.getCookies();
+        Cookie cookie = null;
+        String cookieName = "name";
+        for(Cookie c: cookies) {
+            if(cookieName.equals(c.getName())) {
+                cookie = c;
+                break;
+            }
+        }
 %>
 <%--AGAI SORE--%>
+
 <body>
 <% if(session.getAttribute("admin")!=null){%>
 <header style="position: fixed; width: 100%; z-index: 1;">
@@ -45,18 +58,26 @@
 </header>
 <% } %>
 <div class="wrapper">
+
+    <form style="position: absolute; right: 0;top:0;" method="get" action="<%=request.getContextPath()%>/logout">
+        <input class="btn btn-info mt" type="submit" value="Logout">
+    </form>
+
     <aside class="sidebar" style="position: fixed; height: 100%;">
         <div class="logotype">NewsApp</div>
+
         <ul class="sidebar-list">
 <%--            sb active        --%>
-            <a id="news"><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/open-book.svg'>News</li></a>
-            <a id="clubs"><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/users.svg'></i>Clubs</li></a>
-            <a id="events"><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/megaphone.svg'></i>Events</li></a>
+            <a href="#newsInfo" onclick="news()"><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/open-book.svg'>News</li></a>
+            <a href="#clubsInfo"><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/users.svg'></i>Clubs</li></a>
+            <a href="#eventsInfo" ><li class="sidebar-item"><img class="responsive" src='http://www.entypo.com/images/megaphone.svg'></i>Events</li></a>
+
+
         </ul>
     </aside>
     <main class="content">
         <div class = "feed-grid" style="margin-left: 10%; margin-top:2%;" >
-
+            <p style=" margin-right: 200px; font-size: 2.5em">Welcome <%=cookie.getValue()%>!</p>
             <div id="newsInfo">
             <% for(News paper : news){%>
                 <form action="<%=request.getContextPath()%>/page" method="get">
@@ -77,6 +98,8 @@
             <%}%>
             </div>
 
+
+
             <div id="clubsInfo" >
             <% for(Club club : clubs){%>
                 <form action="<%=request.getContextPath()%>/page" method="get">
@@ -94,6 +117,9 @@
             <%}%>
             <div>
 
+
+
+
             <div id="eventsInfo">
             <% for(Event event : events){%>
                     <form action="<%=request.getContextPath()%>/page" method="get">
@@ -105,17 +131,16 @@
                                         <h4 class="card-title"><%=event.getName()%></h4>
                                         <p class="card-text"><%=event.getDescription()%></p>
                                         <input type="number" style="display: none;" name="id" value="<%=event.getId()%>">
-                                        <input type="text" style="display: none;"name="type" value="news">
+                                        <input type="text" style="display: none;" name="type" value="event">
                                     </div>
                                 </a>
                             </div>
                         </button>
                     </form>
                 <%}%>
-            <div>
+         <div>
 
         </div>
     </main>
 </div>
-<script src="${pageContext.request.contextPath}/js/MainPage_js.js"></script>
 </body>

@@ -1,4 +1,4 @@
-<%@ page import="api.services.FetchService" %>
+
 <%@ page import="api.models.Student" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="api.models.Club" %>
@@ -72,17 +72,48 @@
     if(session.getAttribute("user")==null) {
         response.sendRedirect("../auth.jsp");
     }
-    String userId = (String) session.getAttribute("user_id");
     Club club = (Club) request.getAttribute("club");
+    ArrayList<Student> students = (ArrayList<Student>) request.getAttribute("students");
+    for(Student student : students){
+        System.out.println(student);
+    }
+    boolean isStudentOfClub = (boolean) request.getAttribute("isStudentOfClub");
 %>
 
 <script>
+    $(document).ready(function() {
+        $('#btn_join').click(function(){
+            id = $("#id_student").val();
+            club = $("#id_club").val();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        location.reload();
+                    }
+                };
+            xhttp.open("POST", "http://localhost:8080/finalproj_war/api/clubs/enter", true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.send("club_id=" + club + "&student_id=" + id);
+        });
 
+        $('#btn_leave').click(function(){
+            id = $("#id_student").val();
+            club = $("#id_club").val();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    location.reload();
+                }
+            };
+            xhttp.open("POST", "http://localhost:8080/finalproj_war/api/clubs/leave", true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.send("club_id=" + club + "&student_id=" + id);
+        });
+    });
 </script>
 
 <div class="container">
     <div id="main">
-
         <div class="row" id="real-estates-detail">
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="panel panel-default">
@@ -94,10 +125,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="text-center" id="author">
-                            <img id="img" src="">
-                            <h3 id="title"></h3>
+                            <img id="img" src="<%=club.getImage()%>">
+                            <h3 id="title"><%=club.getName()%></h3>
                             <small class="label label-warning">University club</small>
-                            <p id="bodyText"></p>
+                            <p id="bodyText"><%=club.getDescription()%></p>
                             <p class="sosmed-author">
                                 <a href="#"><i class="fa fa-facebook" title="Facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter" title="Twitter"></i></a>
@@ -108,15 +139,18 @@
                     </div>
                 </div>
             </div>
-            <input style="display: none;" type="text" class="form-control" id="id_student" value="">
+            <input style="display: none;" type="text" class="form-control" id="id_student" value="<%=request.getSession().getAttribute("user_id")%>">
             <input style="display: none;" type="text" class="form-control" id="id_club" value="<%=club.getId()%>">
             <div class="col-lg-8 col-md-8 col-xs-12">
                 <div class="panel">
                     <div class="panel-body">
                         <ul id="myTab" class="nav nav-pills">
                             <li class="active"><a href="#detail" data-toggle="tab">Information</a></li>
-                            <li class=""><button class="btn btn-info mt-2" id="btn_join">Join</button></li>
+                            <% if(isStudentOfClub){%>
                             <li class=""><button class="btn btn-info mt-2" id="btn_leave">Leave</button></li>
+                            <% }else{ %>
+                            <li class=""><button class="btn btn-info mt-2" id="btn_join">Join</button></li>
+                            <% } %>
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <hr>
@@ -124,11 +158,11 @@
                                 <h4>About club</h4>
                                 <table class="table table-th-block">
                                     <tbody>
-                                    <tr><td class="active">Registration date:</td><td id="created_date"></td></tr>
+                                    <tr><td class="active">Registration date:</td><td id="created_date"><%=club.getCreated_at()%></td></tr>
                                     <tr><td class="active">University:</td><td>Astana IT University</td></tr>
+                                    <tr><td class="active">Members of club:</td><td><%=students.size()%></td></tr>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>

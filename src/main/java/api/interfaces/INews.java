@@ -4,10 +4,10 @@ import api.models.News;
 
 import javax.ws.rs.core.Response;
 
-public interface INews {
+public interface INews extends CRUD<News> {
     //CRUD
     Response create(News news) throws Exception;
-    Response read(int id) throws Exception;
+    News read(int id) throws Exception;
     Response update(News news) throws Exception;
     Response delete(int id) throws Exception;
 

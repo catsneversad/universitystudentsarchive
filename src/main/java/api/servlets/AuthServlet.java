@@ -13,20 +13,24 @@ import java.io.IOException;
 @WebServlet(name = "AuthServlet")
 public class AuthServlet extends HttpServlet {
     HttpSession session;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String role = request.getParameter("role");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         session = request.getSession();
         AuthService authService = new AuthService();
-        if (session.getAttribute("user") != null){
+        if (session.getAttribute("user") != null) {
             session.invalidate();
             return;
         }
 
-        if (role.equals("student")){
+        if (role.equals("student")) {
             try {
                 Student student = authService.authenticate(email, password);
+                Cookie ck = new Cookie("name",student.getFirstName());
+                ck.setMaxAge(-1);
+                response.addCookie(ck);
                 session.setAttribute("user", student);
                 session.setAttribute("user_id", student.getId());
                 System.out.println("Successfully logged");
@@ -34,8 +38,7 @@ public class AuthServlet extends HttpServlet {
                 request.setAttribute("student_auth_error", e.getMessage());
             }
 
-        }
-        else if (role.equals("admin")){
+        } else if (role.equals("admin")) {
             try {
                 Admin admin = authService.admin_authenticate(email, password);
                 session.setAttribute("admin", admin);

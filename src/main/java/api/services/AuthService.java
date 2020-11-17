@@ -23,9 +23,9 @@ public class AuthService extends BasicService implements IAuth {
         resultSet.next();
         return new Student(
                 resultSet.getInt("id"),
-                resultSet.getString("email"),
                 resultSet.getString("firstName"),
                 resultSet.getString("lastName"),
+                resultSet.getString("email"),
                 new Group(resultSet.getInt("group_id"), resultSet.getString("group_name")),
                 new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
                 resultSet.getInt("year")

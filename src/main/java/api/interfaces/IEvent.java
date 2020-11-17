@@ -4,10 +4,10 @@ import api.models.Event;
 
 import javax.ws.rs.core.Response;
 
-public interface IEvent {
+public interface IEvent extends CRUD<Event> {
     //CRUD
     Response create(Event event) throws Exception;
-    Response read(int id) throws Exception;
+    Event read(int id) throws Exception;
     Response update(Event event) throws Exception;
     Response delete(int id) throws Exception;
 

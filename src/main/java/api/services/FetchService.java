@@ -4,6 +4,8 @@ import api.models.*;
 import interfaces.IFetch;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class FetchService extends BasicService implements IFetch {
 
@@ -66,7 +68,7 @@ public class FetchService extends BasicService implements IFetch {
     }
 
     @Override
-    public ArrayList<Event> fetchEvents(int major_id, int club_id) throws Exception {
+    public LinkedList<Event> fetchEvents(int major_id, int club_id) throws Exception {
         String query;
         if (major_id == 0 && club_id == 0){
             query = "select * from event";
@@ -74,7 +76,7 @@ public class FetchService extends BasicService implements IFetch {
             query = "select * from event where major_id = " + major_id +
                     " or club_id = " + club_id;
         }
-        ArrayList<Event> list = new ArrayList<>();
+        LinkedList<Event> list = new LinkedList<>();
         statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next())
@@ -90,14 +92,14 @@ public class FetchService extends BasicService implements IFetch {
     }
 
     @Override
-    public ArrayList<News> fetchNews(int major_id) throws Exception {
+    public Stack<News> fetchNews(int major_id) throws Exception {
         String query;
         if (major_id == 0){
             query = "select * from news";
         }else{
             query = "select * from news where major_id = " + major_id;
         }
-        ArrayList<News> list = new ArrayList<>();
+        Stack<News> list = new Stack<>();
         statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next())

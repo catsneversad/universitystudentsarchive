@@ -30,11 +30,11 @@ public class NewsResources implements INews {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response read(@PathParam("id") int id) {
+    public News read(@PathParam("id") int id) {
         try {
             return newsService.read(id);
         } catch (Exception e) {
-            return CustomResponses.serverError(e.getMessage());
+            return null;
         }
     }
 

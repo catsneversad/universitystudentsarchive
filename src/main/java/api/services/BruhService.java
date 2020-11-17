@@ -14,7 +14,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class BruhService {
-    private static String baseUri = "http://localhost:8080/finalproj_war_exploded/api";
+    private static String baseUri = "http://localhost:8080/finalproj_war/api";
+
     static WebTarget getWebTarget () {
         ClientConfig config = new ClientConfig();
         Client client = ClientBuilder.newClient(config);
@@ -25,5 +26,11 @@ public class BruhService {
         WebTarget target = getWebTarget();
         Event event = target.path("events").path(id).request().accept(MediaType.APPLICATION_JSON).get(Event.class);
         return event;
+    }
+
+    public Club getClub (String id) {
+        WebTarget target = getWebTarget();
+        Club club = target.path("clubs").path(id).request().accept(MediaType.APPLICATION_JSON).get(Club.class);
+        return club;
     }
 }

@@ -3,11 +3,13 @@ package api.v1;
 import api.Response.CustomResponses;
 import api.interfaces.IClub;
 import api.models.Club;
+import api.models.Student;
 import api.services.ClubService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Path("/clubs")
 public class ClubResources implements IClub {
@@ -104,11 +106,11 @@ public class ClubResources implements IClub {
     @GET()
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response getStudentsOfClub(@PathParam("id") int id) {
+    public ArrayList<Student> getStudentsOfClub(@PathParam("id") int id) {
         try {
             return clubService.getStudentsOfClub(id);
         } catch (Exception e) {
-            return CustomResponses.serverError(e.getMessage());
+            return null;
         }
     }
 }

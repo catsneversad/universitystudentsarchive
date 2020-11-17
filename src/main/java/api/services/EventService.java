@@ -33,7 +33,7 @@ public class EventService extends BasicService implements IEvent {
     }
 
     @Override
-    public Response read(int id) throws Exception {
+    public Event read(int id) throws Exception {
         String query = "select *, m.name as major_name, c.name as club_name from event e " +
                 "inner join major m " +
                 "on e.major_id = m.id " +
@@ -46,7 +46,7 @@ public class EventService extends BasicService implements IEvent {
             throw new Exception(ResponseMessage.NOT_FOUND);
         }
         resultSet.next();
-        return CustomResponses.read(new Event(
+        return new Event(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
                 resultSet.getString("description"),
@@ -54,7 +54,8 @@ public class EventService extends BasicService implements IEvent {
                 resultSet.getDate("created_at"),
                 new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
                 new Club(resultSet.getInt("club_id"), resultSet.getString("club_name"))
-        ));
+        );
+
     }
 
     @Override

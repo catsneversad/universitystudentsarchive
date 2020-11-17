@@ -29,11 +29,11 @@ public class EventResources implements IEvent {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response read(@PathParam("id") int id) {
+    public Event read(@PathParam("id") int id) {
         try {
             return eventService.read(id);
         } catch (Exception e) {
-            return CustomResponses.serverError(e.getMessage());
+            return null;
         }
     }
 
