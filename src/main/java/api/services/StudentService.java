@@ -50,15 +50,16 @@ public class StudentService extends BasicService implements IStudent {
 
     @Override
     public Response update(Student student) throws Exception {
-        String query = "update student set firstName = ?, lastName = ?, email = ?, group_id = ?, major_id = ?, year = ? where id = ?";
+        String query = "update student set firstName = ?, lastName = ?, email = ?, password = ?, group_id = ?, major_id = ?, year = ? where id = ?";
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, student.getFirstName());
         preparedStatement.setString(2, student.getLastName());
         preparedStatement.setString(3, student.getEmail());
-        preparedStatement.setInt(4, student.getGroup().getId());
-        preparedStatement.setInt(5, student.getMajor().getId());
-        preparedStatement.setInt(6, student.getYear());
-        preparedStatement.setInt(7, student.getId());
+        preparedStatement.setString(4, student.getPassword());
+        preparedStatement.setInt(5, student.getGroup().getId());
+        preparedStatement.setInt(6, student.getMajor().getId());
+        preparedStatement.setInt(7, student.getYear());
+        preparedStatement.setInt(8, student.getId());
         preparedStatement.executeUpdate();
         return CustomResponses.UPDATED;
     }
@@ -109,5 +110,29 @@ public class StudentService extends BasicService implements IStudent {
             ));
         closeAll();
         return CustomResponses.read(list);
+    }
+
+
+
+    public Student getStudentById (int id) throws Exception {
+        String query = "select *,m.name as major_name, g.name as group_name from student s " +
+                "inner join _group g on s.group_id = g.id " +
+                "inner join major m on s.major_id = m.id " +
+                "where s.id = " + id;
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        if (!resultSet.isBeforeFirst()){
+            throw new Exception(ResponseMessage.NOT_FOUND);
+        }
+        resultSet.next();
+        return new Student(
+                resultSet.getInt("id"),
+                resultSet.getString("email"),
+                resultSet.getString("firstName"),
+                resultSet.getString("lastName"),
+                new Group(resultSet.getInt("group_id"), resultSet.getString("group_name")),
+                new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
+                resultSet.getInt("year")
+        );
     }
 }

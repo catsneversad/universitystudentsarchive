@@ -4,8 +4,8 @@ $(document).ready(function() {
             name = $("#name").val();
             description = $("#description").val();
             image = $("#image").val();
-            club = $("club").val();
-            major = $("major").val();
+            club = $("#club").val();
+            major = $("#major").val();
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4) {
@@ -14,43 +14,149 @@ $(document).ready(function() {
                     location.reload();
                 }
             };
-            xhttp.open("PUT", "http://localhost:8080/finalproj_war_exploded/api/events", true);
+
+            alert (JSON.stringify({
+                name: name,
+                description: description,
+                image: image,
+                major:{
+                    id: club
+                },
+                club: {
+                    id: major
+                }
+            }));
+
+            xhttp.open("POST", "http://localhost:8080/finalproj_war_exploded/api/events", true);
             xhttp.setRequestHeader('Content-type', 'application/json');
             xhttp.send(JSON.stringify({
                 name: name,
                 description: description,
                 image: image,
-                club: club,
-                major: major
+                major:{
+                    id: club
+                },
+                club: {
+                    id: major
+                }
             }));
         }
     });
 
+
+    $('#btn_find').click(function(){
+        jQuery.ajax({
+            url: "http://localhost:8080/finalproj_war_exploded/api/events",
+            type: "GET",
+            contentType: 'application/json; charset=utf-8',
+            success: function (resultData) {
+                events = resultData;
+                displayEvents(events)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {alert("GG");
+
+            },
+            timeout: 120000,
+        });
+    });
+
+
+    $('#btn_find').click(function(){
+        jQuery.ajax({
+            url: "http://localhost:8080/finalproj_war_exploded/api/events",
+            type: "GET",
+            contentType: 'application/json; charset=utf-8',
+            success: function (resultData) {
+                events = resultData;
+                displayEvents(events)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {alert("GG");
+
+            },
+            timeout: 120000,
+        });
+    });
+
+
+        let events = [];
+        jQuery.ajax({
+                url: "http://localhost:8080/finalproj_war_exploded/api/events",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                success: function (resultData) {
+                    events = resultData;
+                    displayEvents(events)
+                },
+                error: function (jqXHR, textStatus, errorThrown) {alert("GG");
+
+                },
+                timeout: 120000,
+            });
+
+    const displayEvents = (characters) => {
+        id = 0;
+        path = $('#path').val();
+        const htmlString = characters
+            .map((character) => {
+                return `
+                <tr>
+                        <td>${character.name}
+                        </td>
+                        <td>${character.description}
+                        </td>
+                         <td>${character.club.name}
+                        </td>
+                         <td>${character.major.name}
+                        </td>
+                        <td>
+                        <form action="/finalproj_war_exploded/event" method="get">
+                            <input type="text" name="id" style="display: none"
+                                   id="id${character.id}"
+                                   value="${character.id}">
+                            <button class="btn btn-info mt-2" id="edit${character.id}">Edit
+                                event
+                            </button>
+                        </form>
+                        </td>
+                </tr>
+        `;
+            })
+            .join('');
+        tbody.innerHTML = htmlString;
+    };
+
     $('#btn_change').click(function(){
+        // alert("gg");
         if(NameValid() && DescriptionValid() && ImageValid()) {
             name = $("#name").val();
             description = $("#description").val();
             image = $("#image").val();
-            club = $("club").val();
-            major = $("major").val();
-            alert (name);
+            id = $("#id").val();
+            majorId = $("#major").val();
+            clubId = $("#club").val();
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function ()
             {
                 if (this.readyState == 4){
                     var response = JSON.parse(this.responseText).message;
                     alert(response)
-                    if (this.status == 200)
-                        location.reload();
-                    if(this.status == 400)
-                        alert("Client error");
-                    if(this.status == 500)
-                        alert("Server error");
                 }
             };
-            xhttp.open("PUT", "http://localhost:8090/My_RESTful_Service_war/api/reader/updateClub", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send("event_name=" + name + "&event_description=" + description + "&event_image" + image + "&event_club" + club + "&event_major" + major);
+
+            xhttp.open("PUT", "http://localhost:8080/finalproj_war_exploded/api/events", true);
+            xhttp.setRequestHeader('Content-type', 'application/json');
+            xhttp.send(JSON.stringify({
+                id: id,
+                name: name,
+                description: description,
+                image: image,
+                major:{
+                    id: majorId
+                },
+                club: {
+                    id: clubId
+                }
+            }));
         }
     });
 

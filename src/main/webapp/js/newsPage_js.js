@@ -4,12 +4,11 @@ $(document).ready(function() {
     var id_get = url.searchParams.get("id");
     var xhttp = new XMLHttpRequest();
     jQuery.ajax({
-        url: "http://localhost:8080/finalproj_war_exploded/api/clubs/"+id_get,
+        url: "http://localhost:8080/finalproj_war_exploded/api/news/"+id_get,
         type: "GET",
         contentType: 'application/json; charset=utf-8',
         success: function (resultData) {
             club = resultData;
-
             $("#name1").val(club.name);
             $("#image1").val(club.image);
             $("#club_img").attr("src", club.image);
@@ -23,31 +22,12 @@ $(document).ready(function() {
         timeout: 120000,
     });
 
-    $('#remove').click(function(){
-            club_id = $("#club_id_hidden").val();
-            student_id = $("#student_id").val();
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function ()
-            {
-                if (this.readyState == 4){
-                    var response = JSON.parse(this.responseText).message;
-                    alert(response);
-                    location.reload();
-                }
-            };
-            xhttp.open(" POST", "http://localhost:8080/finalproj_war_exploded/api/clubs/leave", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send("club_id=" + club_id + "&student_id=" + student_id);
-    });
-
     $('#btn_add').click(function(){
         if(NameValid() && DescriptionValid() && ImageValid()) {
-            alert ("MAL");
-            // id = $("#club_id_hidden").val();
+            id = $("#club_id_hidden").val();
             name = $("#name").val();
             description = $("#description").val();
             image = $("#image").val();
-            // owner = $("#owner").val();
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4) {
@@ -56,62 +36,34 @@ $(document).ready(function() {
                     location.reload();
                 }
             };
-            xhttp.open("POST", "http://localhost:8080/finalproj_war_exploded/api/clubs", true);
-            xhttp.setRequestHeader('Content-type', 'application/json');
-            xhttp.send(JSON.stringify({
-                // id: id,
-                name: name,
-                description: description,
-                image: image,
-                // owner: owner
-            }));
-        }
-    });
-
-    $('#btn_change').click(function(){
-            id = $("#club_id_hidden").val();
-            name = $("#name1").val();
-            description = $("#description1").val();
-            image = $("#image1").val();
-            date = $("#club_date_hidden").val();
-            if (!name || !description || !image) {
-                alert('Please, fill all fields');
-                return;
-            }
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4) {
-                    var response = JSON.parse(this.responseText).message;
-                    alert(response)
-                    location.reload();
-                }
-            };
-            xhttp.open("PUT", "http://localhost:8080/finalproj_war_exploded/api/clubs", true);
+            xhttp.open("POST", "http://localhost:8080/finalproj_war_exploded/api/news", true);
             xhttp.setRequestHeader('Content-type', 'application/json');
             xhttp.send(JSON.stringify({
                 id: id,
                 name: name,
                 description: description,
-                image: image,
+                image: image
             }));
+        }
     });
 
 
-
-    let clubs = [];
+    let events = [];
     jQuery.ajax({
-        url: "http://localhost:8080/finalproj_war_exploded/api/clubs",
+        url: "http://localhost:8080/finalproj_war_exploded/api/news",
         type: "GET",
         contentType: 'application/json; charset=utf-8',
         success: function (resultData) {
-            clubs = resultData;
-            displayClubs(clubs)
+            events = resultData;
+            displayEvents(events)
         },
         error: function (jqXHR, textStatus, errorThrown) {alert("GG");
+
         },
         timeout: 120000,
     });
 
-    const displayClubs = (characters) => {
+    const displayEvents = (characters) => {
         id = 0;
         const htmlString = characters
             .map((character) => {
@@ -122,8 +74,8 @@ $(document).ready(function() {
                         <td>${character.description}
                         </td>
                         <td>
-                        <a href="../jsp/redactClubPage.jsp?id=${character.id}">
-                            <button class="btn btn-info mt-2">Edit club</button>
+                         <a href="../jsp/redactNewsPage.jsp?id=${character.id}">
+                            <button class="btn btn-info mt-2">Edit news</button>
                         </a>
                         </td>
                 </tr>
@@ -132,6 +84,35 @@ $(document).ready(function() {
             .join('');
         tbody.innerHTML = htmlString;
     };
+
+    $('#btn_change').click(function(){
+        id = $("#club_id_hidden").val();
+        name = $("#name1").val();
+        description = $("#description1").val();
+        image = $("#image1").val();
+        date = $("#club_date_hidden").val();
+        alert(id + name);
+        if (!name || !description || !image) {
+            alert('Please, fill all fields');
+            return;
+        }
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                var response = JSON.parse(this.responseText).message;
+                alert(response)
+                location.reload();
+            }
+        };
+        xhttp.open("PUT", "http://localhost:8080/finalproj_war_exploded/api/news", true);
+        xhttp.setRequestHeader('Content-type', 'application/json');
+        xhttp.send(JSON.stringify({
+            id: id,
+            name: name,
+            description: description,
+            image: image
+        }));
+    });
+
 
     //Description Valid
     var DescriptionValid = function(){
@@ -188,9 +169,7 @@ $(document).ready(function() {
         ImageValid();
     });
 
-
-
-   // DATE FORMATING
+    //    DATE FORMATING
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),

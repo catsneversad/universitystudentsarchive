@@ -25,6 +25,14 @@
     </style>
 </head>
 <body>
+<style>
+    @media screen and (max-width: 980px) {
+        .row{
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
 <div class="container mt-5">
     <div class="text-center">
         <p class="display-4">Welcome to Student Portal</p>

@@ -2,8 +2,10 @@ package api.services;
 
 import api.models.*;
 import interfaces.IFetch;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class FetchService extends BasicService implements IFetch {
 
@@ -66,7 +68,7 @@ public class FetchService extends BasicService implements IFetch {
     }
 
     @Override
-    public ArrayList<Event> fetchEvents(int major_id, int club_id) throws Exception {
+    public LinkedList<Event> fetchEvents(int major_id, int club_id) throws Exception {
         String query;
         if (major_id == 0 && club_id == 0){
             query = "select * from event";
@@ -74,7 +76,7 @@ public class FetchService extends BasicService implements IFetch {
             query = "select * from event where major_id = " + major_id +
                     " or club_id = " + club_id;
         }
-        ArrayList<Event> list = new ArrayList<>();
+        LinkedList<Event> list = new LinkedList<>();
         statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next())
@@ -83,7 +85,9 @@ public class FetchService extends BasicService implements IFetch {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getString("image"),
-                    resultSet.getDate("created_at")
+                    resultSet.getDate("created_at"),
+                    new Major(1),
+                    new Club(1)
             ));
         closeAll();
         return list;
@@ -151,6 +155,19 @@ public class FetchService extends BasicService implements IFetch {
         return list;
     }
 
+    public ArrayList<Integer> fetchYears () throws Exception {
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "select distinct year from student";
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while (resultSet.next()) {
+            list.add (
+                    resultSet.getInt("year")
+            );
+        }
+        return list;
+    }
+
     public ArrayList<Major> fetchMajors() throws Exception {
         ArrayList<Major> list = new ArrayList<>();
         String query = "select * from major";
@@ -209,4 +226,20 @@ public class FetchService extends BasicService implements IFetch {
         }
         return list.get(0);
     }
+
+    public ArrayList<Club> getClubsOfStudent (int id) throws Exception {
+        ArrayList<Club> list = new ArrayList<>();
+
+        String query = "select club_id" +
+                " from students_clubs" +
+                " where student_id= " +Integer.toString(id) +
+                " group by student_id, club_id;";
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while (resultSet.next()) {
+            list.add(fetchClubById(resultSet.getInt("club_id")));
+        }
+        return list;
+    }
+
 }

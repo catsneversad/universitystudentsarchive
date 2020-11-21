@@ -2,6 +2,8 @@ package api.services;
 
 import api.models.Club;
 import api.models.Event;
+import api.models.Major;
+import api.models.Student;
 import com.google.gson.Gson;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -26,4 +28,24 @@ public class BruhService {
         Event event = target.path("events").path(id).request().accept(MediaType.APPLICATION_JSON).get(Event.class);
         return event;
     }
+
+    public Club getClub (String id) {
+        WebTarget target = getWebTarget();
+        Club club = target.path("clubs").path(id).request().accept(MediaType.APPLICATION_JSON).get(Club.class);
+        return club;
+    }
+
+    public Student getStudentById(String idStudent) {
+        WebTarget target = getWebTarget();
+        System.out.println(target.path("students").path(idStudent).request().accept(MediaType.APPLICATION_JSON).get(String.class));
+        Student student = target.path("students").path(idStudent).request().accept(MediaType.APPLICATION_JSON).get(Student.class);
+        return student;
+    }
+
+//    public Major getMajorById (String id) {
+//        WebTarget target = getWebTarget();
+//        System.out.println(target.path("major").path(idStudent).request().accept(MediaType.APPLICATION_JSON).get(String.class));
+//        Student student = target.path("students").path(idStudent).request().accept(MediaType.APPLICATION_JSON).get(Student.class);
+//        return student;
+//    }
 }

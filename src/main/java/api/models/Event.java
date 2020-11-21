@@ -31,13 +31,32 @@ public class Event {
         this.club = club;
     }
 
-    public Event(String name, String description, String image, int club_id, int major_id) {
+    public Event(String name, String description, String image, Date created_at) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.created_at = created_at;
+    }
+    public Event(String name, String description, String image, Date created_at, Major major, Club club) {
         this.name = name;
         this.description = description;
         this.image = image;
         this.created_at = created_at;
         this.major = major;
         this.club = club;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", created_at=" + created_at +
+                ", club=" + club +
+                ", major=" + major +
+                '}';
     }
 
     public int getId() {

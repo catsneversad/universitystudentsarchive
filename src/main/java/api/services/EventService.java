@@ -57,6 +57,26 @@ public class EventService extends BasicService implements IEvent {
         ));
     }
 
+    public Event read2(int id) throws Exception {
+        String query = "select * from event e " +
+                "where e.id = " + id;
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        if (!resultSet.isBeforeFirst()){
+            throw new Exception(ResponseMessage.NOT_FOUND);
+        }
+        resultSet.next();
+        return new Event(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
+                resultSet.getString("image"),
+                resultSet.getDate("created_at")
+//                new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
+//                new Club(resultSet.getInt("club_id"), resultSet.getString("club_name"))
+        );
+    }
+
     @Override
     public Response update(Event event) throws Exception {
         String query = "update event set name = ?, description = ?, image = ?, major_id = ?, club_id = ? where id = ?";

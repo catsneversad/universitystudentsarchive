@@ -1,95 +1,33 @@
 package api.models;
 
-public class Student {
-    private int id;
-    private String FirstName;
-    private String LastName;
-    private String email;
-    private String password;
+public class Student extends User{
     private Group group;
     private Major major;
     private int year;
 
-    public Student(int id, String firstName, String secondName, String email, Group group, Major major, int year) {
-        this.id = id;
-        this.FirstName = firstName;
-        this.LastName = secondName;
-        this.email = email;
+    public Student() {
+    }
+
+    public Student(int id, String email, String firstName, String lastName, Group group, Major major, int year) {
+        super(id, email, firstName, lastName);
         this.group = group;
         this.major = major;
         this.year = year;
     }
 
-    public Student(String firstName, String secondName, String email, Group group, Major major, int year) {
-        this.FirstName = firstName;
-        this.LastName = secondName;
-        this.email = email;
+    public Student(String email, String firstName, String lastName, String password, Group group, Major major, int year) {
+        super(email, firstName, lastName, password);
         this.group = group;
         this.major = major;
         this.year = year;
     }
 
-    public Student(String firstName, String secondName, String email, String password, Group group, Major major, int year) {
-        this.FirstName = firstName;
-        this.LastName = secondName;
-        this.email = email;
-        this.password = password;
+    public Student(String email, String firstName, String lastName, Group group, Major major, int year) {
+        super(email, firstName, lastName);
         this.group = group;
         this.major = major;
         this.year = year;
     }
-
-    public Student(int id, String firstName, String secondName, String email, String password, Group group, Major major, int year) {
-        this.id = id;
-        this.FirstName = firstName;
-        this.LastName = secondName;
-        this.email = email;
-        this.password = password;
-        this.group = group;
-        this.major = major;
-        this.year = year;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return FirstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.FirstName = firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String secondName) {
-        this.LastName = secondName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Group getGroup() {
         return group;
     }
@@ -117,14 +55,9 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", group=" + group +
+                "group=" + group +
                 ", major=" + major +
                 ", year=" + year +
-                '}';
+                "} " + super.toString();
     }
 }

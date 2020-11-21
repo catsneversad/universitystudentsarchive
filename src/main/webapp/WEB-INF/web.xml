@@ -32,6 +32,56 @@
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>ClubServlet</servlet-name>
+        <servlet-class>api.servlets.ServletClubPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClubServlet</servlet-name>
+        <url-pattern>/page</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ServletEvent</servlet-name>
+        <servlet-class>api.servlets.ServletEvent</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletEvent</servlet-name>
+        <url-pattern>/event</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddToInboxEventServlet</servlet-name>
+        <servlet-class>api.servlets.AddToInboxEventServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddToInboxEventServlet</servlet-name>
+        <url-pattern>/AddToInboxEventServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>api.servlets.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>AddInboxClubServlet</servlet-name>
+        <servlet-class>api.servlets.AddToInboxClubServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddInboxClubServlet</servlet-name>
+        <url-pattern>/AddToInboxClubServlet</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>AddStudentServlet</servlet-name>
         <servlet-class>api.servlets.AddStudentServlet</servlet-class>

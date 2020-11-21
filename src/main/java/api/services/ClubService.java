@@ -7,6 +7,7 @@ import api.models.*;
 
 import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ClubService extends BasicService implements IClub {
@@ -129,5 +130,35 @@ public class ClubService extends BasicService implements IClub {
             ));
         closeAll();
         return CustomResponses.read(list);
+    }
+
+    public ArrayList<Student> getStudentsOfClub2 (int id) throws Exception {
+        ArrayList<Student> list = new ArrayList<>();
+        String query = "select *, m.name as major_name from students_clubs c " +
+                "inner join student s on c.student_id = s.id " +
+                "inner join _group g on s.group_id = g.id " +
+                "inner join major m on s.major_id = m.id " +
+                "where c.club_id = " + id;
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while(resultSet.next())
+            list.add(new Student(
+                    resultSet.getInt("student_id"),
+                    resultSet.getString("email"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    new Group(resultSet.getString("name")),
+                    new Major(resultSet.getString("major_name")),
+                    resultSet.getInt("year")
+            ));
+        closeAll();
+        return list;
+    }
+
+    public boolean isStudentOfClub(int student_id,int club_id) throws SQLException {
+        String query = "select * from students_clubs where student_id = " + student_id + " and club_id =" + club_id;
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        return resultSet.isBeforeFirst();
     }
 }

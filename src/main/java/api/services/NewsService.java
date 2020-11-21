@@ -3,8 +3,6 @@ package api.services;
 import api.Response.CustomResponses;
 import api.Response.ResponseMessage;
 import api.interfaces.INews;
-import api.models.Event;
-import api.models.Major;
 import api.models.News;
 
 import javax.ws.rs.core.Response;
@@ -31,8 +29,7 @@ public class NewsService extends BasicService implements INews {
 
     @Override
     public Response read(int id) throws Exception {
-        String query = "select *, m.name as major_name from news n inner join major m " +
-                "on n.major_id = m.id where n.id = " + id;
+        String query = "select * from news as n where n.id = " + id;
         statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         if (!resultSet.isBeforeFirst()){
@@ -44,9 +41,27 @@ public class NewsService extends BasicService implements INews {
                 resultSet.getString("name"),
                 resultSet.getString("description"),
                 resultSet.getString("image"),
-                new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
+//                new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
                 resultSet.getDate("created_at")
         ));
+    }
+
+    public News read2(int id) throws Exception {
+        String query = "select * from news as n where n.id = " + id;
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        if (!resultSet.isBeforeFirst()){
+            throw new Exception(ResponseMessage.NOT_FOUND);
+        }
+        resultSet.next();
+        return new News(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
+                resultSet.getString("image"),
+//                new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
+                resultSet.getDate("created_at")
+        );
     }
 
     @Override
@@ -80,7 +95,7 @@ public class NewsService extends BasicService implements INews {
     public Response getNews(int major_id) throws Exception {
         String query;
         if (major_id == 0){
-            query = "select *, m.name as major_name from news n inner join major m on n.major_id = m.id";
+            query = "select * from news n";
         }else{
             query = "select *, m.name as major_name from news n inner join major m " +
                     "on n.major_id = m.id where n.major_id = " + major_id;
@@ -94,7 +109,7 @@ public class NewsService extends BasicService implements INews {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getString("image"),
-                    new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
+//                    new Major(resultSet.getInt("major_id"), resultSet.getString("major_name")),
                     resultSet.getDate("created_at")
             ));
         closeAll();

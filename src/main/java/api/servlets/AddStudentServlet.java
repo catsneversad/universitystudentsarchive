@@ -45,7 +45,7 @@ public class AddStudentServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        Student myStudent = new Student(firstName, secondName, email, password, group, major, year);
+        Student myStudent = new Student(email, firstName, secondName, group, major, year);
         System.out.println(myStudent);
         System.out.println(myStudent.getFirstName());
         StudentService studentService = new StudentService();

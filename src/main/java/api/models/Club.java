@@ -37,17 +37,6 @@ public class Club {
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "Club{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", image='" + image + '\'' +
-                ", created_at=" + created_at +
-                '}';
-    }
-
     public int getId() {
         return id;
     }

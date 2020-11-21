@@ -62,6 +62,7 @@ public class NewsResources implements INews {
     }
 
     @GET
+//    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response getNews(@QueryParam("major") int major_id) {

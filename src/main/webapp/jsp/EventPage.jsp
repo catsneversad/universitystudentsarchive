@@ -1,8 +1,8 @@
-<%@ page import="api.models.News" %><%--
+<%@ page import="api.models.Event" %><%--
   Created by IntelliJ IDEA.
   User: Пользователь
   Date: 15.11.2020
-  Time: 16:52
+  Time: 16:53
   To change this template use File | Settings | File Templates.
 --%>
 
@@ -15,7 +15,6 @@
 <html>
 <head>
     <title>Title</title>
-
     <style>
         body{background:url(https://bootstraptema.ru/images/bg/bg-1.png)}
         #main {
@@ -54,12 +53,9 @@
     </style>
 </head>
 <body>
-<%-- take a news from attribute or you can change it to take from FetchService--%>
+<%-- take a event from attribute or you can change it to take from FetchService--%>
 <%
-    if(session.getAttribute("user")==null) {
-        response.sendRedirect("../auth.jsp");
-    }
-    News news = (News) request.getAttribute("news");
+    Event event = (Event) request.getAttribute("event");
 %>
 
 <div class="container">
@@ -77,10 +73,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="text-center" id="author">
-                            <img style="width: 150px;" src="<%=news.getImage()%>">
-                            <h3><%=news.getName()%></h3>
-                            <small class="label label-warning">news </small>
-                            <p><%=news.getDescription()%></p>
+                            <img style="width: 150px;" src="<%=event.getImage()%>">
+                            <h3><%=event.getName()%></h3>
+                            <small class="label label-warning">news</small>
+                            <p><%=event.getDescription()%></p>
                             <p class="sosmed-author">
                                 <a href="#"><i class="fa fa-facebook" title="Facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter" title="Twitter"></i></a>
@@ -101,17 +97,16 @@
                         <div id="myTabContent" class="tab-content">
                             <hr>
                             <div class="tab-pane fade active in" id="detail">
-                                <h4>About club</h4>
+                                <h4>About event</h4>
                                 <table class="table table-th-block">
                                     <tbody>
-                                    <tr><td class="active">Creation date:</td><td><%=news.getCreated_at()%></td></tr>
+                                    <tr><td class="active">Creation date:</td><td><%=event.getCreated_at()%></td></tr>
                                     <tr><td class="active">University:</td><td>Astana IT University</td></tr>
-<%--                                    <tr><td class="active">Majors:</td><td><%=news.getMajor().getName()%></td></tr>--%>
-
+<%--                                    <tr><td class="active">Majors:</td><td><%=event.getMajor().getName()%></td></tr>--%>
+<%--                                    <tr><td class="active">Club:</td><td><%=event.getClub().getName()%></td></tr>--%>
                                     </tbody>
 
                                 </table>
-
 
                             </div>
 
@@ -125,6 +120,5 @@
 
 </div>
 </div>
-
 </body>
 </html>
